@@ -1,0 +1,11 @@
+dSuite Plugin
+Chase Arnold
+
+dHome-
+  /dhome
+  Checks that the user has a home, and if he/she does, tells him/her the coordinates
+  /dsethome
+  Sets the users home
+  
+dLift-
+  No Commands
