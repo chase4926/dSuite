@@ -1,14 +1,16 @@
 dSuite Plugin
 Chase Arnold
 
+Youtube video - http://www.youtube.com/watch?v=IaJ0-ggcoXo
+
 dHome- A simple to use Home plugin, simply step on a diamond block to get teleported home.
   /dhome
   Checks that the user has a home, and if he/she does, tells him/her the coordinates
   /dsethome
   Sets the users home
   
-dLift- A No-commands Elevator plugin, youtube video coming soon.
+dLift- A No-commands Elevator plugin.
   No Commands
 
-dScreen - A No-commands Screen plugin, youtube video coming soon.
+dScreen - A No-commands Screen plugin.
   No Commands
