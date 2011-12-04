@@ -38,7 +38,7 @@ class DSuitePlugin
     hex_pattern = /^[[:xdigit:]]+$/
     4.times do |i|
       line = text_array[i]
-      if line[0] != nil and line[1] != nil and line[0].chr == '&' and hex_pattern === line[1].chr then # Red line
+      if line[0] != nil and line[1] != nil and line[0].chr == '&' and hex_pattern === line[1].chr then # Color code found
         sign_object.set_line(i, colorize_string(line))
       else
         sign_object.set_line(i, line)
