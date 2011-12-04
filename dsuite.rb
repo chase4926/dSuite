@@ -34,12 +34,20 @@ class DSuitePlugin
     @path ||= File.join getDataFolder, 'locations.data'
   end
   
+  def change_sign_line(sign_object, line_num, line)
+    hex_pattern = /^[[:xdigit:]]+$/
+    if line[0] != nil and line[1] != nil and line[0].chr == '&' and hex_pattern === line[1].chr then # Red line
+      sign_object.set_line(line_num, colorize_string(line))
+    else
+      sign_object.set_line(line_num, line)
+    end
+  end
+  
   def change_sign(sign_object, text_array)
-    #server.broadcast_message(convert_array_to_readable_string(sign_object.methods))
-    sign_object.set_line(0, text_array[0])
-    sign_object.set_line(1, text_array[1])
-    sign_object.set_line(2, text_array[2])
-    sign_object.set_line(3, text_array[3])
+    change_sign_line(sign_object, 0, text_array[0])
+    change_sign_line(sign_object, 1, text_array[1])
+    change_sign_line(sign_object, 2, text_array[2])
+    change_sign_line(sign_object, 3, text_array[3])
     # Now perform a block update to change the sign
     sign_object.update
   end
@@ -175,7 +183,7 @@ class DSuitePlugin
       player = e.player
       block = player.world.block_at(player.location).block_at(:down)
       clicked_block = e.clicked_block
-      if block.is? :gold_block and clicked_block.is?(:stone_button) then
+      if block != nil and clicked_block != nil and block.is? :gold_block and clicked_block.is?(:stone_button) then
         # Standing on a gold block, clicking on a stone_button
         button_level = (clicked_block.location.to_a[1] - block.location.to_a[1]).to_i
         if button_level == 1 then
