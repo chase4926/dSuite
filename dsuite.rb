@@ -34,20 +34,16 @@ class DSuitePlugin
     @path ||= File.join getDataFolder, 'locations.data'
   end
   
-  def change_sign_line(sign_object, line_num, line)
-    hex_pattern = /^[[:xdigit:]]+$/
-    if line[0] != nil and line[1] != nil and line[0].chr == '&' and hex_pattern === line[1].chr then # Red line
-      sign_object.set_line(line_num, colorize_string(line))
-    else
-      sign_object.set_line(line_num, line)
-    end
-  end
-  
   def change_sign(sign_object, text_array)
-    change_sign_line(sign_object, 0, text_array[0])
-    change_sign_line(sign_object, 1, text_array[1])
-    change_sign_line(sign_object, 2, text_array[2])
-    change_sign_line(sign_object, 3, text_array[3])
+    hex_pattern = /^[[:xdigit:]]+$/
+    4.times do |i|
+      line = text_array[i]
+      if line[0] != nil and line[1] != nil and line[0].chr == '&' and hex_pattern === line[1].chr then # Red line
+        sign_object.set_line(i, colorize_string(line))
+      else
+        sign_object.set_line(i, line)
+      end
+    end
     # Now perform a block update to change the sign
     sign_object.update
   end
@@ -162,7 +158,6 @@ class DSuitePlugin
     end
     
     event (:redstone_change) do |e|
-      #server.broadcast_message(e.get_new_current.inspect)
       block = e.get_block
       if block.is? :sign_post and block.block_at(:down).is? :iron_block then
         signs = screen_setup(block.block_at(:down))
