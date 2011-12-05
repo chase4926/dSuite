@@ -160,15 +160,37 @@ class DSuitePlugin
     event (:redstone_change) do |e|
       block = e.get_block
       if block.is? :sign_post and block.block_at(:down).is? :iron_block then
-        signs = screen_setup(block.block_at(:down))
-        if signs != nil then
-          sign1_array = signs[0]
-          sign2_array = signs[1]
-          screen_sign = signs[2]
+        screen_signs = screen_setup(block.block_at(:down))
+        if screen_signs != nil then
+          sign1_array = screen_signs[0]
+          sign2_array = screen_signs[1]
+          screen_sign = screen_signs[2]
           if e.get_new_current == 0 then # Unpowered
             change_sign(screen_sign, sign1_array)
           else # Powered
             change_sign(screen_sign, sign2_array)
+          end
+        end
+      end
+      if block.is? :sign_post or block.is? :wall_sign then
+        #puts block.state.get_line(0).inspect
+        if block.state.get_line(0) == '[drt]' and block.state.get_line(1) != '' then
+          coords = block.state.get_line(1).split(',')
+          if coords.count == 3 then
+            x = coords[0].to_i
+            y = coords[1].to_i
+            z = coords[2].to_i
+            current = e.get_new_current
+            torch = e.get_block.world.block_at(x, y, z)
+            if current.to_i == 0 then
+              if torch.is? :redstone_torch_on then
+                torch.change_type :torch
+              end
+            else
+              if torch.is? :torch then
+                torch.change_type :redstone_torch_on
+              end
+            end
           end
         end
       end
@@ -206,6 +228,11 @@ class DSuitePlugin
             server.scheduler.schedule_sync_delayed_task(self) { player.teleport(destination) }
           end
         end
+      end
+      
+      if e.right_click_block? and e.material.to_s == 'STICK' then
+        coord_array = e.clicked_block.location.to_a
+        e.player.msg yellow("#{e.clicked_block.type}: x#{coord_array[0].to_i} y#{coord_array[1].to_i} z#{coord_array[2].to_i}")
       end
     end
     
