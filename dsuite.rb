@@ -103,7 +103,7 @@ class DSuitePlugin
     load_locations()
     players = {}
     
-    public_command('dsethome', 'set_home', '/dsethome') do |me, *|
+    public_player_command('dsethome', 'set_home', '/dsethome') do |me, *|
       # Get the player's current position
       location = me.location.to_a
       # ---
@@ -127,7 +127,7 @@ class DSuitePlugin
       me.msg('Home set!')
     end
     
-    public_command('dhome', 'check_home', '/dhome') do |me, *|
+    public_player_command('dhome', 'check_home', '/dhome') do |me, *|
       home = @location_hash[me.display_name.split(']').last]
       if home == nil then
         me.msg('You are homeless!')
@@ -136,7 +136,7 @@ class DSuitePlugin
       end
     end
     
-    public_command('dsuite', 'About the plugin', '/dsuite') do |me, *|
+    public_player_command('dsuite', 'About the plugin', '/dsuite') do |me, *|
       me.msg('dSuite Plugins:')
       me.msg('---------------')
       me.msg('dHome:')
